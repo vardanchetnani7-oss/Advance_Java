@@ -1,0 +1,46 @@
+package assessment_section_C;
+
+import java.util.Scanner;
+
+public class ConsoleApp {
+    public static void main(String[] args) {
+        PaymentService service = new PaymentService();
+        Scanner sc = new Scanner(System.in);
+        Integer currentUserId = null;
+        String currentUsername = "";
+
+        while (true) {
+            if (currentUserId == null) {
+                System.out.println("\n1. Register\n2. Login\n3. Exit");
+                int choice = sc.nextInt();
+                sc.nextLine(); 
+                if (choice == 3) break;
+
+                System.out.print("Username: "); String u = sc.nextLine();
+                System.out.print("Password: "); String p = sc.nextLine();
+
+                if (choice == 1) service.register(u, p);
+                else {
+                    currentUserId = service.login(u, p);
+                    if (currentUserId != null) currentUsername = u;
+                    else System.out.println("Login Failed.");
+                }
+            } else {
+                System.out.println("\nWelcome " + currentUsername + "\n1. Send Money\n2. Export Statement\n3. Logout");
+                int choice = sc.nextInt();
+                sc.nextLine();
+
+                if (choice == 1) {
+                    System.out.print("To User: "); String to = sc.nextLine();
+                    System.out.print("Amount: "); double amt = sc.nextDouble();
+                    try { service.sendMoney(currentUserId, to, amt); } catch (Exception e) {}
+                } else if (choice == 2) {
+                    service.exportStatement(currentUserId, currentUsername);
+                } else {
+                    currentUserId = null;
+                }
+            }
+        }
+        sc.close();
+    }
+}

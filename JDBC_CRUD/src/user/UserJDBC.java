@@ -1,0 +1,47 @@
+package user;
+import java.util.List;
+import java.util.Scanner;
+
+import model.Users;
+import user_methods.UserMethods;
+
+public class UserJDBC {
+public static void main(String[] args) {
+//	Scanner sc = new Scanner(System.in);
+//	System.out.println("enter id: ");
+//	int id = sc.nextInt();
+//	System.out.println("enter name: ");
+//	String name = sc.next();
+//	System.out.println("enter contact");
+//	long contact = sc.nextLong();
+//	System.out.println("enter address");
+//    String address = sc.nextLine();
+//    create users
+//    Users u1 = new Users();
+//    u1.setId(id);
+//    u1.setName(name);
+//    u1.setContact(contact);
+//    u1.setAddress(address);
+ UserMethods u = new UserMethods();
+//    u.createUser(u1);
+ 
+ 
+ // to fetch a single users
+//	Users u2 = u.getUser(1);
+//	System.out.println(u2);
+	
+// to fetch all the users form the database
+//	List<Users>list = u.getAllUser();
+//	System.out.println(list);
+//	
+	
+//to update users
+//	Users u1 = new Users();
+//	u1.setId(1);
+//	u1.setContact(12345656);
+//	u.updateUser(u1);
+ 
+	// to delete user
+	u.deleteuser(0);
+}
+}

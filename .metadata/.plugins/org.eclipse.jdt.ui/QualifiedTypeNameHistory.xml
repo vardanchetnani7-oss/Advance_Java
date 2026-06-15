@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="java.awt.Color"/>
+    <fullyQualifiedTypeName name="java.lang.String"/>
+    <fullyQualifiedTypeName name="java.util.HashSet"/>
+    <fullyQualifiedTypeName name="java.awt.Font"/>
+    <fullyQualifiedTypeName name="java.io.Writer"/>
+    <fullyQualifiedTypeName name="java.io.IOException"/>
+    <fullyQualifiedTypeName name="java.util.Map.Entry"/>
+    <fullyQualifiedTypeName name="com.sun.tools.javac.Main"/>
+    <fullyQualifiedTypeName name="DBConnection.DBconnection"/>
+    <fullyQualifiedTypeName name="model.Users"/>
+    <fullyQualifiedTypeName name="user_methods.UserMethods"/>
+    <fullyQualifiedTypeName name="java.sql.ResultSet"/>
+    <fullyQualifiedTypeName name="models.Seller"/>
+    <fullyQualifiedTypeName name="jdk.internal.classfile.impl.AbstractPoolEntry.ConstantDynamicEntryImpl"/>
+    <fullyQualifiedTypeName name="dao.SellerDao"/>
+    <fullyQualifiedTypeName name="email_services.EmailServices"/>
+    <fullyQualifiedTypeName name="jdk.internal.misc.FileSystemOption"/>
+    <fullyQualifiedTypeName name="dao.ProductDao"/>
+</qualifiedTypeNameHistroy>

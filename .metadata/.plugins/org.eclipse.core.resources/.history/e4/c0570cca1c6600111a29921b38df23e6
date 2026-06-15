@@ -1,0 +1,30 @@
+package user;
+import java.util.Scanner;
+
+import model.Users;
+import user_methods.UserMethods;
+
+public class UserJDBC {
+public static void main(String[] args) {
+//	Scanner sc = new Scanner(System.in);
+//	System.out.println("enter id: ");
+//	int id = sc.nextInt();
+//	System.out.println("enter name: ");
+//	String name = sc.next();
+//	System.out.println("enter contact");
+//	long contact = sc.nextLong();
+//	System.out.println("enter address");
+//    String address = sc.nextLine();
+//    
+//    Users u1 = new Users();
+//    u1.setId(id);
+//    u1.setName(name);
+//    u1.setContact(contact);
+//    u1.setAddress(address);
+ UserMethods u = new UserMethods();
+//    u.createUser(u1);
+	Users u2 = u.getUser(1);
+	System.out.println(u2);
+   
+}
+}

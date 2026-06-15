@@ -1,0 +1,91 @@
+	<%@ page language="java" contentType="text/html; charset=UTF-8"
+	    pageEncoding="UTF-8"%>
+	    <%@include file="header.jsp"%>
+	<!DOCTYPE html>
+	<html>
+	<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	</head>
+	<body>
+	<%String msg = (String) request.getAttribute("msg");
+	if(msg!=null){%>
+	<h2>
+	<%out.print(msg);%></h2><%} %>
+	
+	<% int otp1 =  (Integer)request.getAttribute("otp");
+	String email = (String)request.getAttribute("email");%>
+	
+	<div class="container-fluid py-5">
+	        <div class="container py-5">
+	            <div class="mx-auto text-center wow fadeIn" data-wow-delay="0.1s" style="max-width: 500px;">
+	                <div class="btn btn-sm border rounded-pill text-primary px-3 mb-3">Verify OTP</div>
+	            </div>
+	            <div class="row justify-content-center">
+	                <div class="col-lg-7">
+	                    <div class="wow fadeIn" data-wow-delay="0.3s">
+	                    <form action="seller" method="post">
+	    <div class="row g-3 justify-content-center">
+	
+	        <input type="hidden" name="otp1" value="<%=otp1%>">
+			<input type="hidden" name="email" value="<%=email%>">
+	
+	        <!-- Verify OTP -->
+	        <div class="col-6">
+	            <div class="form-floating">
+	                <input type="password" class="form-control" name = "otp2" id="password" placeholder="Password">
+	                <label for="email">Enter OTP</label>
+	            </div>
+	        </div>
+	        <!-- Timer -->
+	         <div class="col-12 text-center">
+            <small>OTP expires in <span id="countdown" class="fw-bold">30s</span></small>
+        </div>
+	
+	        <!-- Button Centered -->
+	        <div class="col-auto">
+	            <button class="btn btn-primary px-4 py-2" type="submit" name="action" value="verifyotp" id = "verifyBtn">Verify OTP</button>
+	        </div>
+	        
+	        <!-- Resend link (hidden until expiry) -->
+        <div class="col-12 text-center" id="resendDiv" style="display:none;">
+            <a href="seller?action=sendotp&email=<%=email%>" class="btn btn-link btn-sm">
+                Resend OTP
+            </a>
+        </div>
+        
+	
+	    </div>
+	</form>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	<script>
+	var seconds = 30s;
+	var countDownEl = document.getElementById('countdown');
+	var verifyBtn = document.getElementsById('verifyBtn');
+	var resendDiv = document.getElementsById('resendDiv');
+	
+	
+	var timer = setInterval(function ()
+	{
+
+		seconds -- ;
+		countDownEl.textContent = seconds + 's';
+		 if(seconds <=10){
+		 countDownEl.style.color = 'red';
+		 }
+		 if(seconds<=0){
+			 clearInterval(timer);
+			 verifyBtn.disabled = true;
+			 resendDiv.style.display = 'block';
+	         countdownEl.parentElement.innerHTML = '<span class="text-danger">OTP expired!</span>';
+		 }
+	},1000);
+	
+	
+	          </script>
+	</body>
+	</html>

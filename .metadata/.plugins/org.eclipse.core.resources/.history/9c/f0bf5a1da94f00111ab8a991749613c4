@@ -1,0 +1,18 @@
+package assessment_section_C;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DataConfig {
+private static final String URL = "jdbc:postresql://localhost:5432/payapp";
+private static final String USER = "postgres";
+private static final String PASS = "new_password";
+
+
+public static Connection getConnection() throws SQLException{
+	System.out.println("Database connected Successfully");
+	return DriverManager.getConnection(URL,USER,PASS);
+	
+}
+}

@@ -1,0 +1,108 @@
+package controller;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import models.Product;
+
+import java.io.File;
+import java.io.IOException;
+
+import dao.ProductDao;
+
+/**
+ * Servlet implementation class ProductController
+ */
+@WebServlet("/product")
+@MultipartConfig(
+	    fileSizeThreshold = 1024 * 1024,
+	    maxFileSize       = 1024 * 1024 * 10,
+	    maxRequestSize    = 1024 * 1024 * 15
+	)
+public class ProductController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ProductController() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+	private String extractfilename(Part file) {
+		String cd = file.getHeader("content-disposition");
+		System.out.println(cd);
+		String[] items = cd.split(";");
+		for (String string : items) {
+			if (string.trim().startsWith("filename")) {
+				return string.substring(string.indexOf("=") + 2, string.length() - 1);
+			}
+		}
+		return "";
+	}	
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		String action = request.getParameter("action");
+		System.out.println(action);
+		if(action.equalsIgnoreCase("upload")) {
+			Product p = new Product ();
+			String savePath = "D:\\Java_course\\Project\\src\\main\\webapp\\pimages";
+			File fileSaveDir = new File(savePath);
+			if (!fileSaveDir.exists()) {
+				fileSaveDir.mkdir();
+			}
+			Part file1 = request.getPart("pimage");
+			String fileName = extractfilename(file1);
+			file1.write(savePath + File.separator + fileName);
+			String filePath = savePath + File.separator + fileName;
+			
+			p.setPname(request.getParameter("pname"));
+			p.setPimage(fileName);
+			p.setPprice(Integer.parseInt(request.getParameter("pprice")));
+			p.setPcategory(request.getParameter("pcategory"));
+			p.setSid(Integer.parseInt(request.getParameter("sid")));
+			System.out.println(p);
+			ProductDao.insertProduct(p);
+			response.sendRedirect("seller-home.jsp");
+		}
+		
+		else if(action.equalsIgnoreCase("update")) {
+			Product p = new Product ();
+			String savePath = "D:\\Java_course\\Project\\src\\main\\webapp\\pimages";
+			File fileSaveDir = new File(savePath);
+			if (!fileSaveDir.exists()) {
+				fileSaveDir.mkdir();
+			}
+			Part file1 = request.getPart("pimage");
+			String fileName = extractfilename(file1);
+			file1.write(savePath + File.separator + fileName);
+			String filePath = savePath + File.separator + fileName;	
+			
+	
+			p.setPname(request.getParameter("pname"));
+			p.setPimage(fileName);
+			p.setPprice(Integer.parseInt(request.getParameter("pprice")));
+			p.setPcategory(request.getParameter("pcategory"));
+			p.setPid(Integer.parseInt(request.getParameter("pid")));
+			System.out.println(p);
+			ProductDao.updateProduct(p);
+			response.sendRedirect("seller-manage-product.jsp");
+		}
+	}
+
+}

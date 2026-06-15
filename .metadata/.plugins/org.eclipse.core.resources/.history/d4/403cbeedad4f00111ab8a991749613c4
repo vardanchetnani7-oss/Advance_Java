@@ -1,0 +1,113 @@
+package assessment_section_C;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class PaymentService {
+	
+	//IDENTITY MANAGEMENT : REGISTER
+public boolean register(String user ,String pass) {
+	String sql ="INSERT INTO users(username,password)VALUES(?,?)";
+	try(Connection conn = DataConfig.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql)) {
+		
+		st.setString(1, user);
+		st.setString(2, pass);
+		
+		return st.executeUpdate()>0;
+		
+	} catch (SQLException e) {
+		// TODO: handle exception
+		e.printStackTrace();
+		return false;
+	}
+}
+
+//Identity Management: Login
+public Integer login(String user, String pass) {
+    String sql = "SELECT id FROM users WHERE username = ? AND password = ?";
+    try (Connection conn = DataConfig.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setString(1, user);
+        pstmt.setString(2, pass);
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) return rs.getInt("id");
+    } catch (SQLException e) { e.printStackTrace(); }
+    return null;
+}
+
+// Wallet Operations: Send Money with Transactions
+public void sendMoney(int senderId, String receiverName, double amount) throws Exception {
+    String findReceiver = "SELECT id FROM users WHERE username = ?";
+    String checkBal = "SELECT balance FROM users WHERE id = ?";
+    String updateBal = "UPDATE users SET balance = balance + ? WHERE id = ?";
+    String logTx = "INSERT INTO transactions (sender_id, receiver_id, amount) VALUES (?, ?, ?)";
+
+    try (Connection conn = DataConfig.getConnection()) {
+        conn.setAutoCommit(false); // Start Transaction
+
+        // Find Receiver
+        int receiverId = -1;
+        try (PreparedStatement ps = conn.prepareStatement(findReceiver)) {
+            ps.setString(1, receiverName);
+            ResultSet rs = ps.executeQuery();
+            if (!rs.next()) throw new Exception("Receiver not found.");
+            receiverId = rs.getInt("id");
+        }
+
+        // Check Balance
+        try (PreparedStatement ps = conn.prepareStatement(checkBal)) {
+            ps.setInt(1, senderId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next() && rs.getDouble("balance") < amount) 
+                throw new Exception("Insufficient funds.");
+        }
+
+        // Perform Updates
+        try (PreparedStatement ps = conn.prepareStatement(updateBal)) {
+            ps.setDouble(1, -amount); ps.setInt(2, senderId); ps.executeUpdate();
+            ps.setDouble(1, amount);  ps.setInt(2, receiverId); ps.executeUpdate();
+        }
+
+        // Log Transaction
+        try (PreparedStatement ps = conn.prepareStatement(logTx)) {
+            ps.setInt(1, senderId); ps.setInt(2, receiverId); ps.setDouble(3, amount);
+            ps.executeUpdate();
+        }
+
+        conn.commit();
+        System.out.println("Transfer successful!");
+    } catch (Exception e) {
+        System.out.println("Transaction Failed: " + e.getMessage());
+        throw e;
+    }
+}
+
+// Export Statement to CSV
+public void exportStatement(int userId, String username) {
+    String sql = "SELECT t.transaction_id, u1.username as sender, u2.username as receiver, t.amount, t.created_at " +
+                 "FROM transactions t JOIN users u1 ON t.sender_id = u1.id " +
+                 "JOIN users u2 ON t.receiver_id = u2.id WHERE t.sender_id = ? OR t.receiver_id = ?";
+    
+    try (Connection conn = DataConfig.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql);
+         BufferedWriter writer = new BufferedWriter(new FileWriter(username + "_report.csv"))) {
+        
+        pstmt.setInt(1, userId); pstmt.setInt(2, userId);
+        ResultSet rs = pstmt.executeQuery();
+        writer.write("ID,Sender,Receiver,Amount,Date\n");
+        
+        while (rs.next()) {
+            writer.write(String.format("%d,%s,%s,%.2f,%s\n", 
+                rs.getInt("transaction_id"), rs.getString("sender"), 
+                rs.getString("receiver"), rs.getDouble("amount"), rs.getTimestamp("created_at")));
+        }
+        System.out.println("Report exported to " + username + "_report.csv");
+    } catch (Exception e) { e.printStackTrace(); }
+}
+}
+

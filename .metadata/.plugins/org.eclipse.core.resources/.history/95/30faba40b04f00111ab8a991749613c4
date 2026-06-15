@@ -1,0 +1,79 @@
+package assessment_section_C;
+
+package assessment_section_C;
+
+import java.util.Scanner;
+
+public class ConsoleApp {
+    public static void main(String[] args) {
+        PaymentService service = new PaymentService();
+        Scanner sc = new Scanner(System.in);
+        Integer currentUserId = null;
+        String currentUsername = "";
+
+        while (true) {
+            if (currentUserId == null) {
+                // Initial Menu: Not Logged In
+                System.out.println("\n--- Welcome to PayApp ---");
+                System.out.println("1. Register");
+                System.out.println("2. Login");
+                System.out.println("3. Exit");
+                System.out.print("Choice: ");
+                
+                int choice = sc.nextInt();
+                sc.nextLine(); 
+                if (choice == 3) break;
+
+                System.out.print("Username: "); String u = sc.nextLine();
+                System.out.print("Password: "); String p = sc.nextLine();
+
+                if (choice == 1) {
+                    if(service.register(u, p)) {
+                        System.out.println("Registration successful! Please login.");
+                    }
+                } else {
+                    currentUserId = service.login(u, p);
+                    if (currentUserId != null) {
+                        currentUsername = u;
+                        System.out.println("Login Successful.");
+                    } else {
+                        System.out.println("Login Failed. Invalid credentials.");
+                    }
+                }
+            } else {
+                // User Dashboard: Logged In
+                System.out.println("\n--- Dashboard (" + currentUsername + ") ---");
+                System.out.println("1. Send Money");
+                System.out.println("2. Deposit Money (Add to Balance)"); // New Option for testing
+                System.out.println("3. Export Statement");
+                System.out.println("4. Logout");
+                System.out.print("Choice: ");
+                
+                int choice = sc.nextInt();
+                sc.nextLine();
+
+                if (choice == 1) {
+                    System.out.print("To User (Username): "); String to = sc.nextLine();
+                    System.out.print("Amount: "); double amt = sc.nextDouble();
+                    try { 
+                        service.sendMoney(currentUserId, to, amt); 
+                    } catch (Exception e) {
+                        // Exception message handled inside service.sendMoney
+                    }
+                } else if (choice == 2) {
+                    System.out.print("Enter amount to deposit: ");
+                    double amt = sc.nextDouble();
+                    service.deposit(currentUserId, amt); // Calls the deposit logic
+                } else if (choice == 3) {
+                    service.exportStatement(currentUserId, currentUsername);
+                } else if (choice == 4) {
+                    currentUserId = null;
+                    System.out.println("Logged out successfully.");
+                } else {
+                    System.out.println("Invalid choice.");
+                }
+            }
+        }
+        sc.close();
+    }
+}

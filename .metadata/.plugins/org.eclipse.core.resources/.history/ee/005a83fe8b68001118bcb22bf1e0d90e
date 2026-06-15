@@ -1,0 +1,114 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import DbConnection.DatabaseConnection;
+import models.Product;
+
+public class ProductDao {
+	public static void insertProduct(Product p) {
+		try {
+			Connection conn = DatabaseConnection.createConnection();
+			String sql  = "insert into product (pname,pimage,pprice,pcategory,sid) values(?,?,?,?,?)";
+			PreparedStatement pst = conn.prepareStatement(sql);
+			pst.setString(1,p.getPname());
+			pst.setString(2, p.getPimage());
+			pst.setInt(3,p.getPprice());
+			pst.setString(4, p.getPcategory());
+			pst.setInt(5, p.getSid());
+			pst.executeUpdate();
+			System.out.println("product upload");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	public static List<Product> getProductsBySid(int sid) {
+		List<Product> list = new ArrayList<Product>();
+		try {
+			Connection conn = DatabaseConnection.createConnection();
+			String sql = "select * from product where sid=?";
+			PreparedStatement pst = conn.prepareStatement(sql);
+			pst.setInt(1, sid);
+			ResultSet rs = pst.executeQuery();
+			while (rs.next()) {
+				Product p = new Product();
+				p.setPid(rs.getInt("pid"));
+				p.setPname(rs.getString("pname"));
+				p.setPimage(rs.getString("pimage"));
+				p.setPprice(rs.getInt("pprice"));
+				p.setPcategory(rs.getString("pcategory"));
+				p.setSid(rs.getInt("sid"));
+				list.add(p);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	
+	public static Product getProductPid(int pid) {
+		Product p = null;
+		try {
+			Connection conn = DatabaseConnection.createConnection();
+			String sql = "select * from product where pid=?";
+			PreparedStatement pst = conn.prepareStatement(sql);
+			pst.setInt(1, pid);
+			ResultSet rs = pst.executeQuery();
+			while(rs.next()) {
+				p = new Product();
+				p.setPid(rs.getInt("pid"));
+				p.setPname(rs.getString("pname"));
+				p.setPimage(rs.getString("pimage"));
+				p.setPprice(rs.getInt("pprice"));
+				p.setPcategory(rs.getString("pcategory"));
+				p.setSid(rs.getInt("sid"));
+				
+			}
+		
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return p;
+	}
+	
+	public static void updateProduct(Product p) {
+		try {
+			Connection conn = DatabaseConnection.createConnection();
+			String sql = "update product set pname = ? , pimage = ? , pprice = ? , pcategory = ?, where pid = ?";
+			PreparedStatement pst = conn.prepareStatement(sql);
+			pst.setString(1, p.getPname());
+			pst.setString(2, p.getPimage());
+			pst.setInt(3, p.getPprice());
+			pst.setString(4, p.getPcategory());
+			pst.setInt(5, p.getPid());
+			System.out.println("product updated");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public static void deleteProduct(int pid) {
+		try {
+			Connection conn = DatabaseConnection.createConnection();
+			String sql = "delete from product where pid=?";
+			PreparedStatement pst = conn.prepareStatement(sql);
+			pst.setInt(1, pid);
+			pst.executeUpdate();
+			System.out.println("product deleted");
+		} catch (Exception e) {
+			e.printStackTrace();		
+			
+		}
+
+	}
+}
