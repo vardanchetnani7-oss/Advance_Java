@@ -55,7 +55,7 @@
 
     </div>
 </form>
-                    </div>
+                    <5/div>
               <div class="text-center mt-3">
     <a href="seller-forgot-password.jsp" class="btn btn-outline-primary px-4 py-2">
         Forgot Password

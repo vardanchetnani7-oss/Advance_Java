@@ -112,4 +112,30 @@ public class ProductDao {
 		}
 
 	}
+	
+	
+	public static List<Product>getallProducts(){
+		List<Product>list = new ArrayList<Product>();
+		
+		try {
+			Connection conn = DatabaseConnection.createConnection();
+			String sql = "select * from product";
+			PreparedStatement pst = conn.prepareStatement(sql);
+			ResultSet rs = pst.executeQuery();
+			while(rs.next()) {
+				Product p = new Product();
+				p.setPid(rs.getInt("pid"));
+				p.setPname(rs.getString("pname"));
+				p.setPimage(rs.getString("pimage"));
+				p.setPprice(rs.getInt("pprice"));
+				p.setPcategory(rs.getString("pcategory"));
+				p.setSid(rs.getInt("sid"));
+				list.add(p);
+			}
+		}catch(Exception e) {
+			
+				e.printStackTrace();
+				}
+			return list;
+	}
 }
