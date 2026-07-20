@@ -12,5 +12,11 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.show_sql">true</property>
         <mapping class="com.hibernate.HibernateProj.User1" />
+        <mapping class="OnetoOne.Student"/>
+        <mapping class="OnetoOne.Course"/>
+        <mapping class="OneToMany.Student2" />
+		<mapping class="OneToMany.Course2" />
+		<mapping class="ManyToMany.Student3" />
+		<mapping class="ManyToMany.Course3" />
     </session-factory>
 </hibernate-configuration>

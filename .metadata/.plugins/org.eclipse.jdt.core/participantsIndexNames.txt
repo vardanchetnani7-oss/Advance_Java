@@ -1,6 +1,8 @@
 INDEX VERSION 1.134
 D:\Java_course\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\4114514053.index
 \Project\src\main\java
+D:\Java_course\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2937542558.index
+\Assessment_Section_B_Task_1\src\main\java
 D:\Java_course\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2264099499.index
 \Adv_java\src\main\java
 D:\Java_course\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3699169877.index

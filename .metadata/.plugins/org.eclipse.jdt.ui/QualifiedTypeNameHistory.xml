@@ -18,4 +18,10 @@
     <fullyQualifiedTypeName name="email_services.EmailServices"/>
     <fullyQualifiedTypeName name="jdk.internal.misc.FileSystemOption"/>
     <fullyQualifiedTypeName name="dao.ProductDao"/>
+    <fullyQualifiedTypeName name="jdk.jfr.internal.query.Configuration"/>
+    <fullyQualifiedTypeName name="org.hibernate.Session"/>
+    <fullyQualifiedTypeName name="jakarta.servlet.jsp.tagext.TryCatchFinally"/>
+    <fullyQualifiedTypeName name="javax.persistence.GenerationType"/>
+    <fullyQualifiedTypeName name="javax.persistence.CascadeType"/>
+    <fullyQualifiedTypeName name="javax.persistence.FetchType"/>
 </qualifiedTypeNameHistroy>
