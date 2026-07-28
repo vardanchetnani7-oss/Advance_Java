@@ -26,13 +26,20 @@
 	</section>
 	<section name="Maven2ProjectWizardArchifactPage">
 		<list key="package">
+			<item value="spring.core.springcore"/>
+			<item value="spring.core.demo"/>
+			<item value="spring.core.test"/>
 			<item value="com.hibernate.Assessment_Section_B_task_2"/>
 			<item value="com.hibernate.HibernateProj"/>
 		</list>
 		<list key="groupId">
+			<item value="spring.core"/>
 			<item value="com.hibernate"/>
 		</list>
 		<list key="artifactId">
+			<item value="springcore"/>
+			<item value="demo"/>
+			<item value="test"/>
 			<item value="Assessment_Section_B_task_2"/>
 			<item value="HibernateProj"/>
 		</list>
