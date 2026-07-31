@@ -7,13 +7,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import models.Admin;
+import models.Complaint;
 import models.Member;
 
 import java.io.IOException;
 import java.util.List;
 
 import dao.AdminDao;
+import dao.ComplaintDao;
 import dao.MemberDao;
+import models.FunctionBooking;
+import dao.FunctionBookingDao;
 
 /**
  * Servlet implementation class AdminController
@@ -49,7 +53,11 @@ public class AdminController extends HttpServlet {
 		
 		if (action.equalsIgnoreCase("home")) {
 			List<Member> pendingList = MemberDao.getPendingMembers();
+			List<Complaint> pendingComplaints = ComplaintDao.getPendingComplaints();
+			List<FunctionBooking> pendingBookings = FunctionBookingDao.getPendingBookings();
+			request.setAttribute("pendingBookings", pendingBookings);
 			request.setAttribute("pendingList", pendingList);
+			request.setAttribute("pendingComplaints", pendingComplaints);
 			request.getRequestDispatcher("admin-home.jsp").forward(request, response);
 
 		} else if (action.equalsIgnoreCase("approve")) {
@@ -61,7 +69,22 @@ public class AdminController extends HttpServlet {
 			int memberid = Integer.parseInt(request.getParameter("memberid"));
 			MemberDao.rejectMember(memberid);
 			response.sendRedirect("admin?action=home");
+
+		} else if (action.equalsIgnoreCase("resolveComplaint")) {
+			int complaintid = Integer.parseInt(request.getParameter("complaintid"));
+			ComplaintDao.resolveComplaint(complaintid);
+			response.sendRedirect("admin?action=home");
+		}else if (action.equalsIgnoreCase("approveBooking")) {
+			int bookingid = Integer.parseInt(request.getParameter("bookingid"));
+			FunctionBookingDao.approveBooking(bookingid);
+			response.sendRedirect("admin?action=home");
+
+		} else if (action.equalsIgnoreCase("rejectBooking")) {
+			int bookingid = Integer.parseInt(request.getParameter("bookingid"));
+			FunctionBookingDao.rejectBooking(bookingid);
+			response.sendRedirect("admin?action=home");
 		}
+		
 	}
 
 	/**

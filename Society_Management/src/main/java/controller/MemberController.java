@@ -15,6 +15,9 @@ import java.util.List;
 
 import dao.ComplaintDao;
 import dao.MemberDao;
+import models.FunctionBooking;
+import dao.FunctionBookingDao;
+import java.sql.Date;
 
 @WebServlet("/member")
 public class MemberController extends HttpServlet {
@@ -64,6 +67,8 @@ public class MemberController extends HttpServlet {
 			Member member = (Member) session.getAttribute("member");
 			List<Complaint> complaints = ComplaintDao.getComplaintsByMember(member.getMemberid());
 			request.setAttribute("complaints", complaints);
+			List<FunctionBooking> bookings = FunctionBookingDao.getBookingsByMember(member.getMemberid());
+			request.setAttribute("bookings", bookings);
 
 			
 			request.getRequestDispatcher("member-home.jsp").forward(request, response);
@@ -127,6 +132,23 @@ public class MemberController extends HttpServlet {
 			c.setDescription(request.getParameter("description"));
 
 			ComplaintDao.createComplaint(c);
+			response.sendRedirect("member?action=home");
+		}
+		else if (action.equalsIgnoreCase("bookFunction")) {
+			HttpSession session = request.getSession();
+			Member member = (Member) session.getAttribute("member");
+			if (member == null) {
+				response.sendRedirect("member-login.jsp");
+				return;
+			}
+
+			FunctionBooking b = new FunctionBooking();
+			b.setMemberid(member.getMemberid());
+			b.setFunctionName(request.getParameter("functionName"));
+			b.setFunctionDate(Date.valueOf(request.getParameter("functionDate")));  // expects yyyy-MM-dd
+			b.setPurpose(request.getParameter("purpose"));
+
+			FunctionBookingDao.createBooking(b);
 			response.sendRedirect("member?action=home");
 		}
 	}

@@ -52,4 +52,66 @@ public class ComplaintDao {
 		}
 		return list;
 	}
+	
+	
+	public static List<Complaint> getPendingComplaints() {
+		List<Complaint> list = new ArrayList<>();
+		try {
+			Connection conn = DatabaseConnection.createConnection();
+			String sql = "select * from complaint where status=? order by complaintdate asc";
+			PreparedStatement pst = conn.prepareStatement(sql);
+			pst.setString(1, "PENDING");
+			ResultSet rs = pst.executeQuery();
+			while (rs.next()) {
+				Complaint c = new Complaint();
+				c.setComplaintid(rs.getInt("complaintid"));
+				c.setMemberid(rs.getInt("memberid"));
+				c.setSubject(rs.getString("subject"));
+				c.setDescription(rs.getString("description"));
+				c.setStatus(rs.getString("status"));
+				c.setComplaintDate(rs.getTimestamp("complaintdate"));
+				list.add(c);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	public static List<Complaint> getAllComplaints() {
+		List<Complaint> list = new ArrayList<>();
+		try {
+			Connection conn = DatabaseConnection.createConnection();
+			String sql = "select * from complaint order by complaintdate desc";
+			PreparedStatement pst = conn.prepareStatement(sql);
+			ResultSet rs = pst.executeQuery();
+			while (rs.next()) {
+				Complaint c = new Complaint();
+				c.setComplaintid(rs.getInt("complaintid"));
+				c.setMemberid(rs.getInt("memberid"));
+				c.setSubject(rs.getString("subject"));
+				c.setDescription(rs.getString("description"));
+				c.setStatus(rs.getString("status"));
+				c.setComplaintDate(rs.getTimestamp("complaintdate"));
+				list.add(c);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	public static void resolveComplaint(int complaintid) {
+		try {
+			Connection conn = DatabaseConnection.createConnection();
+			String sql = "update complaint set status=? where complaintid=?";
+			PreparedStatement pst = conn.prepareStatement(sql);
+			pst.setString(1, "RESOLVED");
+			pst.setInt(2, complaintid);
+			pst.executeUpdate();
+			System.out.println("complaint resolved successfully");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

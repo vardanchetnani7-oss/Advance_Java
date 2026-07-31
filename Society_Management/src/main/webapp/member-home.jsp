@@ -2,6 +2,7 @@
 <%@ page import="models.Member" %>
 <%@ page import="java.util.List" %>
 <%@ page import="models.Complaint" %>
+<%@ page import="models.FunctionBooking" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -94,5 +95,54 @@
 	</table>
 <% } %>
 
+
+
+<hr>
+<h3>Book a Function/Hall</h3>
+<form action="member" method="post">
+	<input type="hidden" name="action" value="bookFunction">
+	<table>
+		<tr>
+			<td>Function Name:</td>
+			<td><input type="text" name="functionName" required></td>
+		</tr>
+		<tr>
+			<td>Function Date:</td>
+			<td><input type="date" name="functionDate" required></td>
+		</tr>
+		<tr>
+			<td>Purpose:</td>
+			<td><textarea name="purpose" rows="3" cols="30"></textarea></td>
+		</tr>
+		<tr>
+			<td colspan="2"><input type="submit" value="Submit Booking Request"></td>
+		</tr>
+	</table>
+</form>
+
+<h3>Your Booking History</h3>
+<%
+	List<FunctionBooking> bookings = (List<FunctionBooking>) request.getAttribute("bookings");
+%>
+<% if (bookings == null || bookings.isEmpty()) { %>
+	<p>No bookings made yet.</p>
+<% } else { %>
+	<table border="1" cellpadding="8">
+		<tr>
+			<th>Function Name</th>
+			<th>Date</th>
+			<th>Purpose</th>
+			<th>Status</th>
+		</tr>
+		<% for (FunctionBooking b : bookings) { %>
+			<tr>
+				<td><%= b.getFunctionName() %></td>
+				<td><%= b.getFunctionDate() %></td>
+				<td><%= b.getPurpose() %></td>
+				<td><%= b.getStatus() %></td>
+			</tr>
+		<% } %>
+	</table>
+<% } %>
 </body>
 </html>
