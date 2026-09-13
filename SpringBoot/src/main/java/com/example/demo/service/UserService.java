@@ -34,5 +34,15 @@ public void deleteUser(Integer id) {
 	userRepo.deleteById(id);
 }
 
+public List<User> searchUsersByUsername(String name) {
+	// TODO Auto-generated method stub
+	return userRepo.findByNameIgnoreCase(name);
+}
+
+public List<User> searchUsersByContact(String phone) {
+	// TODO Auto-generated method stub
+	return userRepo.findByPhone(phone);
+}
+
 
 }
