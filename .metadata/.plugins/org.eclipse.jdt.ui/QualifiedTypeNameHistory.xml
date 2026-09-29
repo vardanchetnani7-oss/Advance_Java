@@ -26,4 +26,6 @@
     <fullyQualifiedTypeName name="DbConnection.DatabaseConnection"/>
     <fullyQualifiedTypeName name="com.sun.tools.javac.Main"/>
     <fullyQualifiedTypeName name="java.net.URI"/>
+    <fullyQualifiedTypeName name="java.nio.charset.IllegalCharsetNameException"/>
+    <fullyQualifiedTypeName name="org.springframework.http.HttpStatus"/>
 </qualifiedTypeNameHistroy>
